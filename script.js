@@ -1,44 +1,67 @@
-// ===== TYPEWRITER =====
-const text = "signal stabilized";
-let i = 0;
+document.addEventListener("DOMContentLoaded", () => {
 
-function type() {
-  if (i < text.length) {
-    document.getElementById("title").innerHTML += text[i];
-    i++;
-    setTimeout(type, 40);
+  const terminal = document.getElementById("terminal");
+  const button = document.getElementById("enterBtn");
+
+  // =========================
+  // TERMINAL (INDEX)
+  // =========================
+  if (terminal) {
+
+    const lines = [
+      "booting system...",
+      "injecting noise...",
+      "all hope is dead...",
+      "stabilizing signal...",
+      "can you hear me?...",
+      "connection failed...",
+      "please respond...",
+      "retrying..."
+    ];
+
+    let line = 0;
+    let char = 0;
+
+    function type() {
+      if (line < lines.length) {
+
+        if (char < lines[line].length) {
+          terminal.innerHTML += lines[line][char];
+          char++;
+
+          terminal.scrollTop = terminal.scrollHeight;
+          
+          setTimeout(type, 25);
+
+        } else {
+          terminal.innerHTML += "<br>";
+          line++;
+          char = 0;
+          setTimeout(type, 400);
+        }
+
+      } else {
+        if (button) {
+          button.classList.remove("hidden");
+          button.classList.add("active");
+        }
+      }
+    }
+
+    type();
   }
-}
-type();
 
+  // =========================
+  // BOTÃO → MAIN
+  // =========================
+  if (button) {
+    button.addEventListener("click", () => {
+      document.body.style.animation = "glitchFlash 0.2s";
 
-// ===== CLICK GLITCH =====
-const moth = document.getElementById("mothHome");
-
-moth.addEventListener("click", () => {
-  document.body.style.animation = "glitchFlash 0.2s";
-
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 150);
-});
-
-
-// ===== PLAYER FAKE AUDIO REACTION =====
-setInterval(() => {
-  const glow = Math.random() * 40;
-
-  document.querySelector(".player iframe").style.boxShadow =
-    `0 0 ${glow}px rgba(0,255,150,0.3)`;
-}, 200);
-
-
-// ===== PARTICLES =====
-particlesJS("particles-js", {
-  particles: {
-    number: { value: 30 },
-    color: { value: "#00ff9f" },
-    size: { value: 2 },
-    move: { speed: 0.3 }
+      setTimeout(() => {
+        window.location.href = "main.html";
+      }, 150);
+    });
   }
+
 });

@@ -3,62 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <title>CYBERCAIPIRA</title>
-
-  <!-- CRT -->
-  <link rel="stylesheet" href="./assets/effects/crt-css-master/src/style.css">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="main.css">
+
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<!-- PARTÍCULAS -->
-<div id="particles-js"></div>
+  <!-- PARTICULAS -->
+  <div id="particles-js"></div>
 
-<header class="header">
+  <!-- HEADER -->
+  <header class="header">
+    <!-- LOGO MARIPOSA -->
+    <div class="moth-home-logo" id="mothHome">
+      <img src="./assets/images/cicada.png" alt="logo" class="moth-img">
+    </div>
 
-  <!-- MARIPOSA (HOME) -->
-  <div class="brand" id="mothHome">
+    <!-- REDES SOCIAIS -->
+    <nav class="social-nav">
+      <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-spotify"></i></a>
+    </nav>
+  </header>
 
-    <svg viewBox="0 0 200 200" class="moth-icon">
-      <path d="M100 100 C70 60, 30 70, 40 110 C50 150, 80 140, 100 120 Z"/>
-      <path d="M100 100 C130 60, 170 70, 160 110 C150 150, 120 140, 100 120 Z"/>
-      <path d="M100 75 C85 90, 85 120, 100 140 C115 120, 115 90, 100 75 Z"/>
-      <circle cx="100" cy="72" r="3"/>
-    </svg>
+  <!-- MAIN CONTENT -->
+  <main class="content">
+    <section class="intro">
+      <h2 id="title" class="typewriter crt" data-text="signal stabilized">signal stabilized</h2>
+      <p id="introText" class="crt" data-text="the noise has meaning now">the noise has meaning now</p>
+    </section>
 
-  </div>
+    <section class="player">
+      <iframe
+        src="https://open.spotify.com/embed/artist/0jMQTiRpG2qfZPape8p0R3"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </section>
+  </main>
 
-  <nav>
-    <a href="#" class="glitch crt" data-text="MÚSICAS">MÚSICAS</a>
-    <a href="#" class="glitch crt" data-text="CONTATO">CONTATO</a>
-  </nav>
-
-</header>
-
-<main class="content">
-
-  <section class="intro">
-    <h2 class="glitch crt" id="title">SIGNAL ESTABILIZED</h2>
-    <p class="glitch crt">the noise has meaning now</p>
-  </section>
-
-  <section class="player">
-    <iframe
-      src="https://open.spotify.com/embed/artist/0jMQTiRpG2qfZPape8p0R3"
-      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-      loading="lazy">
-    </iframe>
-  </section>
-
-</main>
-
-<!-- LIB -->
-<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-
-<!-- JS -->
-<script src="main.js"></script>
+  <!-- LIB -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="main.js"></script>
 
 </body>
 </html>

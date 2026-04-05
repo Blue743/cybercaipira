@@ -9,102 +9,7 @@
   src: url('./assets/fonts/glitch_font.otf') format('truetype');
 }
 
-@font-face {
-  font-family: 'Glitchx';
-  src: url('./assets/fonts/Glitch.ttf') format('truetype');
-}
-                /* LOGO */ 
-.home-logo {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  width: 50px;
-  cursor: pointer;
-  z-index: 1000;
-}
-
-.moth-icon {
-  width: 100%;
-  fill: none;
-  stroke: #00ff9f;
-  stroke-width: 1.2;
-  transition: 0.3s;
-}
-
-.home-logo:hover .moth-icon {
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 10px #00ff9f);
-}
-
-/* ───── GRID E NOISE VISUAL ───── */
-.grid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  min-width: 100%;
-  background-image: 
-    linear-gradient(rgba(0,255,150,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,150,0.05) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-}
-
-.noise {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  min-width: 100%;
-  background: url("https://grainy-gradients.vercel.app/noise.svg");
-  opacity: 0.06;
-  pointer-events: none;
-}
-
-/* ───── LOADER TRÊS BOLINHAS ───── */
-#loader {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9997;
-}
-
-.loader-dots {
-  display: flex;
-  gap: 15px;
-}
-
-.loader-dots div {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #00ff9f;
-  animation: dotPulse 0.6s infinite alternate;
-}
-
-.loader-dots div:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loader-dots div:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes dotPulse {
-  0% { transform: translateY(0); opacity: 0.6; }
-  50% { transform: translateY(-10px); opacity: 1; }
-  100% { transform: translateY(0); opacity: 0.6; }
-}
-
-/* ───── RESET / GLOBAL ───── */
+/* ───── RESET ───── */
 * {
   margin: 0;
   padding: 0;
@@ -112,7 +17,30 @@
   font-family: monospace;
 }
 
-/* ───── MAIN / CENTER ───── */
+/* ───── BACKGROUND ───── */
+.grid,
+.noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.grid {
+  background-image: 
+    linear-gradient(rgba(0,255,150,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,150,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.noise {
+  background: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.06;
+}
+
+/* ───── MAIN ───── */
 main {
   min-height: 100vh;
   display: flex;
@@ -122,7 +50,7 @@ main {
   gap: 30px;
 }
 
-/* LOGO */
+/* ───── LOGO (TITULO CYBERCAIPIRA) ───── */
 .logo {
   font-family: 'glitch', monospace;
   font-size: 3rem;
@@ -133,16 +61,59 @@ main {
     0 0 20px #00ff9f;
 }
 
+/* CRT flicker suave */
+.crt.logo {
+  animation: crt-flicker-logo 0.15s infinite;
+}
+
+@keyframes crt-flicker-logo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.92; }
+}
+
+/* ───── LOGO IMAGE HOME ───── */
+.home-logo {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 55px;
+  height: 55px;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(74%) sepia(51%) saturate(500%) hue-rotate(110deg);
+  transition: 0.3s;
+  animation: logoFlicker 2s infinite;
+}
+
+.home-logo:hover .logo-img {
+  transform: scale(1.1);
+  filter:
+    brightness(0) saturate(100%) invert(74%) sepia(51%) saturate(500%) hue-rotate(110deg)
+    drop-shadow(0 0 10px #00ff9f);
+}
+
+@keyframes logoFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
 /* ───── TERMINAL ───── */
 .terminal {
   font-size: 0.9rem;
-  opacity: 0.5;
-  min-height: 80px;
+  opacity: 0.7;
+  width: 320px;
+  max-height: 120px;
+  overflow-y: hidden;
   text-align: left;
-  display: inline-block;
 }
 
-/* ───── BOTÃO ───── */
+/* ───── BOTÃO BASE ───── */
 button {
   font-family: 'GlitchCustom', monospace;
   background: transparent;
@@ -152,24 +123,15 @@ button {
   letter-spacing: 2px;
   cursor: pointer;
   font-size: 1rem;
-  transition: 0.2s;
   opacity: 0;
-  cursor: pointer;
-  transition: 0.2s;
   pointer-events: none;
   position: relative;
   z-index: 10;
 }
 
-button:hover {
-  background: #00ff9f;
-  color: black;
-  box-shadow: 0 0 20px #00ff9f;
-}
-
 button.active {
-  pointer-events: auto;
   opacity: 1;
+  pointer-events: auto;
 }
 
 .hidden {
@@ -177,23 +139,79 @@ button.active {
   pointer-events: none;
 }
 
-/* ───── CRT SUAVE ───── */
-.crt {
-  display: inline-block;
+/* ───── GLITCH BUTTON ───── */
+.glitch-btn {
+  position: relative;
 }
 
-.crt.logo {
-  text-shadow:
-    0 0 1px #00ff9f,
-    0 0 1px #00ff9f,
-    0 0 2px #00ff9f;
+/* bordas RGB */
+.glitch-btn::before,
+.glitch-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid;
+  pointer-events: none;
+  opacity: 0;
 }
 
-@keyframes crt-flicker-logo {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.92; }
+.glitch-btn::before { border-color: #00ffff; }
+.glitch-btn::after  { border-color: #ff00ff; }
+
+/* texto do botão estático */
+.glitch-inner {
+  position: relative;
+  font-family: 'GlitchCustom', monospace;
 }
 
-.crt.logo {
-  animation: crt-flicker-logo 0.15s infinite;
+/* pseudo-elementos RGB do texto */
+.glitch-inner::before,
+.glitch-inner::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.6;
 }
+
+.glitch-inner::before { color: #00ffff; transform: translate(-1px,0); }
+.glitch-inner::after  { color: #ff00ff; transform: translate(1px,0); }
+
+/* hover = bordas piscando + botão treme lateral */
+.glitch-btn:hover {
+  animation: glitchShake 0.12s infinite;
+}
+
+.glitch-btn:hover::before {
+  opacity: 1;
+  animation: glitchBorder1 0.12s infinite;
+}
+
+.glitch-btn:hover::after {
+  opacity: 1;
+  animation: glitchBorder2 0.12s infinite;
+}
+
+/* ───── ANIMAÇÕES ───── */
+@keyframes glitchShake {
+  0% { transform: translate(0,0); }
+  25% { transform: translate  (-2px,0); }
+  50% { transform: translate(2px,0); }
+  75% { transform: translate(-2px,0); }
+  100% { transform: translate(0,0); }
+}
+
+@keyframes glitchBorder1 {
+  0% { transform: translate(-2px,0); border-color:#00ffff; }
+  50% { transform: translate(2px,0); border-color:#ffff00; }
+  100% { transform: translate(-2px,0); border-color:#00ffff; }
+}
+
+@keyframes glitchBorder2 {
+  0% { transform: translate(2px,0); border-color:#ff00ff; }
+  50% { transform: translate(-2px,0); border-color:#ffff00; }
+  100% { transform: translate(2px,0); border-color:#ff00ff; }
+}
+
+/* ───── CRT ───── */
+.crt { display: inline-block; }

@@ -1,202 +1,313 @@
 @font-face {
   font-family: 'GlitchCustom';
-  src: url('./assets/fonts/NewGlitchDemoRegular.ttf');
+  src: url('./assets/fonts/NewGlitchDemoRegular.ttf') format('truetype');
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
-  background: radial-gradient(circle at center, #050505 0%, #000000 100%);
-  color: #00ff9f;
   font-family: monospace;
+  color: #00ff9f;
+  background: radial-gradient(circle at center, #050505 0%, #000000 100%);
   overflow-x: hidden;
-}
-
-/* REMOVE CRT OVERLAY */
-.crt::before,
-.crt::after {
-  display: none !important;
+  min-height: 100%;
 }
 
 /* FUNDO RESPIRANDO */
-body {
-  animation: breathe 6s infinite ease-in-out;
-}
-
-@keyframes breathe {
-  50% { filter: brightness(1.1); }
-}
+body { animation: breathe 6s infinite ease-in-out; }
+@keyframes breathe { 50% { filter: brightness(1.1); } }
 
 /* SCANLINE SUAVE */
 body::before {
   content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0,255,150,0.03),
-    rgba(0,255,150,0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
+  position: fixed; width: 100%; height: 100%; pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(0,255,150,0.03), rgba(0,255,150,0.03) 1px, transparent 1px, transparent 3px);
 }
 
 /* FOG */
 body::after {
   content: "";
-  position: fixed;
-  inset: 0; /* 👈 ISSO resolve metade dos seus problemas */
-
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(0,255,150,0.05),
-    transparent 70%
-  );
-
+  position: fixed; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0,255,150,0.05), transparent 70%);
   animation: fogPulse 8s ease-in-out infinite;
   pointer-events: none;
 }
-
-@keyframes fogPulse {
-  0%   { opacity: 0.3; }
-  50%  { opacity: 0.6; }
-  100% { opacity: 0.3; }
-}
-
-@keyframes fogMove {
-  50% { transform: translate(-10%, -5%); }
-}
+@keyframes fogPulse {0%{opacity:0.3;}50%{opacity:0.6;}100%{opacity:0.3;}}
 
 /* PARTICLES */
-#particles-js {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-h2 {
-  color: red !important;
-  z-index: 999;
-  position: relative;
-}
+#particles-js { position: fixed; width:100%; height:100%; z-index:-1; }
 
 /* HEADER */
-.content {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 60px;
-  position: relative;
-  z-index: 2;
+  display:flex;
+  justify-content:space-between; /* logo à esquerda, redes à direita */
+  align-items:center;
+  padding:20px 60px;
+  position:relative;
+  z-index:2;
 }
 
-
-/* MARIPOSA */
-.moth-icon {
+/* MARIPOSA IMAGEM */
+.moth-home-logo {
   width: 48px;
-  stroke: #00ff9f;
-  fill: none;
+  height: 48px;
   cursor: pointer;
-
-  animation: idle 3s infinite ease-in-out;
-}
-
-@keyframes idle {
-  50% { transform: translateY(-3px); }
-}
-
-.brand:hover .moth-icon {
-  filter: drop-shadow(0 0 15px #00ff9f);
-  animation: glitchMoth 0.3s infinite;
-}
-
-@keyframes glitchMoth {
-  25% { transform: translate(2px,-2px); }
-  50% { transform: translate(-2px,2px); }
-}
-
-/* NAV GLITCH */
-nav a {
   position: relative;
-  margin-left: 30px;
+  display: inline-block;
+}
+
+.moth-home-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(74%) sepia(51%) saturate(500%) hue-rotate(110deg);
+  transition: 0.3s;
+  animation: logoFlicker 2s infinite;
+}
+
+/* GLITCH NO HOVER DO LOGO */
+.moth-home-logo:hover img {
+  animation: none;
+  transform: scale(1.1);
+  filter:
+    brightness(0) saturate(100%) invert(74%) sepia(51%) saturate(500%) hue-rotate(110deg)
+    drop-shadow(0 0 10px #00ff9f);
+  position: relative;
+}
+.moth-home-logo:hover::before,
+.moth-home-logo:hover::after {
+  content: '';
+  position: absolute;
+  top:0; left:0; width:100%; height:100%;
+  z-index:1;
+}
+.moth-home-logo:hover::before { animation: glitchy 0.3s infinite; mix-blend-mode: screen; background: none; }
+.moth-home-logo:hover::after { animation: glitchy 0.3s infinite reverse; mix-blend-mode: screen; background: none; }
+
+@keyframes logoFlicker {0%,100%{opacity:1;}50%{opacity:0.85;}}
+
+/* SOCIAL NAV */
+.social-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-size: 1.5rem;
   text-decoration: none;
-  color: #00ff9f;
+  position: relative;
 }
 
-nav a:hover {
-  text-shadow: 0 0 10px #00ff9f;
-  animation: textGlitch 0.2s infinite;
-}
-
-nav a::before,
-nav a::after {
+/* CRT GLITCH LETRAS NOS ICONES */
+.social-link::before,
+.social-link::after {
   content: attr(data-text);
   position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  opacity: 0.6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-nav a:hover::before {
-  color: cyan;
-  transform: translate(-2px,0);
-  opacity: 0.7;
+.social-link::before { color: #00ffff; animation: glitchy 0.3s infinite; }
+.social-link::after { color: #ff00ff; animation: glitchy 0.3s infinite reverse; }
+
+/* MAIN CONTENT */
+.content { 
+  min-height:100vh; 
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center; 
+  align-items:center; 
+  gap:10px; 
+  position:relative; 
+  z-index:2; 
 }
 
-nav a:hover::after {
-  color: magenta;
-  transform: translate(2px,0);
-  opacity: 0.7;
+/* INTRO TEXTOS */
+.intro { 
+  text-align:center; 
+  display:flex;
+  flex-direction:column;
+  gap:5px; 
 }
 
-@keyframes textGlitch {
-  50% { transform: translate(1px,-1px); }
+.intro h2{ 
+  font-size:2rem; 
+  margin:0;
+  position:relative; 
 }
 
-/* MAIN */
-.content {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.intro p {
+  font-size: 1rem;
 }
 
-/* INTRO */
-.intro {
-  margin-bottom: 40px;
-  text-align: center;
+/* TYPEWRITER */
+.typewriter { 
+  overflow:hidden; 
+  border-right:0.15em solid #00ff9f; 
+  white-space:nowrap; 
+  animation: blink 1s step-end infinite; 
 }
-
-.intro h2 {
-  font-size: 2rem;
-}
+@keyframes blink {0%,100%{border-color:transparent;}50%{border-color:#00ff9f;}}
 
 /* PLAYER */
-.player {
-  width: 100%;
-  max-width: 650px;
+.player { width:100%; max-width:650px; }
+.player iframe { width:100%; height:400px; border-radius:12px; box-shadow:0 0 30px rgba(0,255,150,0.3); }
+
+/* GLITCH LETRAS */
+.crt {
+  position: relative;
+  display: inline-block;
 }
 
-.player iframe {
+.crt::before,
+.crt::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 400px;
-  border-radius: 12px;
-  box-shadow: 0 0 30px rgba(0,255,150,0.3);
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.crt::before { color: #00ffff; animation: glitchy 0.3s infinite; }
+.crt::after { color: #ff00ff; animation: glitchy 0.3s infinite reverse; }
+
+@keyframes glitchy {
+  0% { transform: translate(0px,0px); }
+  25% { transform: translate(-1px,1px); }
+  50% { transform: translate(1px,-1px); }
+  75% { transform: translate(-1px,-1px); }
+  100% { transform: translate(0px,0px); }
+}
+
+/* SOCIAL NAV */
+.social-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  position: relative;
+}
+
+.social-link i {
+  font-size: 2rem;
+  color: #00ff9f;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+/* HOVER GLITCH LEVE */
+.social-link:hover i {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px #00ff9f);
+}
+
+/* GLITCH pseudo para ícones */
+.social-link:hover::before,
+.social-link:hover::after {
+  content: '';
+  position: absolute;
+  top:0; left:0; width:100%; height:100%;
+  z-index:1;
+}
+
+.social-link:hover::before { animation: glitchy 0.3s infinite; mix-blend-mode: screen; }
+.social-link:hover::after { animation: glitchy 0.3s infinite reverse; mix-blend-mode: screen; }
+
+@keyframes glitchy {
+  0% { transform: translate(0px,0px); }
+  25% { transform: translate(-1px,1px); }
+  50% { transform: translate(1px,-1px); }
+  75% { transform: translate(-1px,-1px); }
+  100% { transform: translate(0px,0px); }
+}
+
+/* ===================== */
+/* REDES SOCIAIS HEADER */
+/* ===================== */
+
+.social-nav {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* empurra para o lado oposto do logo */
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  position: relative;
+}
+
+.social-link img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+/* GLITCH SOCIAL ICONS */
+.social-link:hover img {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 10px #00ff9f);
+}
+
+.social-link:hover::before,
+.social-link:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.social-link:hover::before { animation: glitchy 0.3s infinite; mix-blend-mode: screen; }
+.social-link:hover::after { animation: glitchy 0.3s infinite reverse; mix-blend-mode: screen; }
+
+/* GLITCH SUAVE PARA BORBOLETA */
+.moth-home-logo:hover::before,
+.moth-home-logo:hover::after {
+  content: '';
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+.moth-home-logo:hover::before { animation: glitchy 0.15s infinite; mix-blend-mode: screen; }
+.moth-home-logo:hover::after { animation: glitchy 0.15s infinite reverse; mix-blend-mode: screen; }
+
+/* MESMA ANIMAÇÃO GLITCH */
+@keyframes glitchy {
+  0% { transform: translate(0px,0px); }
+  25% { transform: translate(-1px,1px); }
+  50% { transform: translate(1px,-1px); }
+  75% { transform: translate(-1px,-1px); }
+  100% { transform: translate(0px,0px); }
 }
