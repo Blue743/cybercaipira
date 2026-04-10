@@ -3,9 +3,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const terminal = document.getElementById("terminal");
   const button = document.getElementById("enterBtn");
 
-  // =========================
-  // TERMINAL (INDEX)
-  // =========================
   if (terminal) {
 
     const lines = [
@@ -23,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let char = 0;
 
     function type() {
+      terminal.scrollTop = terminal.scrollHeight;
       if (line < lines.length) {
 
         if (char < lines[line].length) {
@@ -51,9 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
     type();
   }
 
-  // =========================
-  // BOTÃO → MAIN
-  // =========================
   if (button) {
     button.addEventListener("click", () => {
       document.body.style.animation = "glitchFlash 0.2s";

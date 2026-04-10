@@ -107,9 +107,13 @@ main {
 .terminal {
   font-size: 0.9rem;
   opacity: 0.7;
+
   width: 320px;
   max-height: 120px;
-  overflow-y: hidden;
+
+  overflow-y: auto;
+  padding-right: 10px;
+
   text-align: left;
 }
 
@@ -142,6 +146,11 @@ button.active {
 /* ───── GLITCH BUTTON ───── */
 .glitch-btn {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  isolation: isolate;
+  overflow: visible;
 }
 
 /* bordas RGB */
@@ -161,6 +170,7 @@ button.active {
 /* texto do botão estático */
 .glitch-inner {
   position: relative;
+  display: inline-block;
   font-family: 'GlitchCustom', monospace;
 }
 
@@ -171,13 +181,14 @@ button.active {
   position: absolute;
   left: 0;
   top: 0;
-  opacity: 0.6;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .glitch-inner::before { color: #00ffff; transform: translate(-1px,0); }
 .glitch-inner::after  { color: #ff00ff; transform: translate(1px,0); }
 
-/* hover = bordas piscando + botão treme lateral */
 .glitch-btn:hover {
   animation: glitchShake 0.12s infinite;
 }
@@ -192,10 +203,20 @@ button.active {
   animation: glitchBorder2 0.12s infinite;
 }
 
+.glitch-btn:hover .glitch-inner::before {
+  opacity: 0.9;
+  animation: glitchText1 0.12s infinite;
+}
+
+.glitch-btn:hover .glitch-inner::after {
+  opacity: 0.9;
+  animation: glitchText2 0.12s infinite;
+}
+
 /* ───── ANIMAÇÕES ───── */
 @keyframes glitchShake {
   0% { transform: translate(0,0); }
-  25% { transform: translate  (-2px,0); }
+  25% { transform: translate(-2px,0); }
   50% { transform: translate(2px,0); }
   75% { transform: translate(-2px,0); }
   100% { transform: translate(0,0); }
@@ -211,6 +232,24 @@ button.active {
   0% { transform: translate(2px,0); border-color:#ff00ff; }
   50% { transform: translate(-2px,0); border-color:#ffff00; }
   100% { transform: translate(2px,0); border-color:#ff00ff; }
+}
+
+@keyframes glitchText1 {
+  0% { transform: translate(-1px,0); }
+  50% { transform: translate(-3px,1px); }
+  100% { transform: translate(-1px,0); }
+}
+
+@keyframes glitchText2 {
+  0% { transform: translate(1px,0); }
+  50% { transform: translate(3px,-1px); }
+  100% { transform: translate(1px,0); }
+}
+
+@keyframes glitchFlash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(2.2); }
+  100% { filter: brightness(1); }
 }
 
 /* ───── CRT ───── */
