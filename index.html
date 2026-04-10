@@ -4,42 +4,50 @@
   <meta charset="UTF-8">
   <title>DEPLOY_ANXIETY</title>
 
-  <!-- CRT -->
   <link rel="stylesheet" href="./assets/effects/crt-css-master/src/style.css">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-  <!-- FUNDO -->
-  <div class="grid"></div>
-  <div class="noise"></div>
-
+  <div class="grid" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="screen-fog" aria-hidden="true"></div>
 
   <div class="home-logo">
     <img src="./assets/images/cicada.png" alt="logo" class="logo-img">
   </div>
 
-  <!-- CONTEÚDO -->
-  <main>
+  <main class="home-content">
+    <section class="home-window" aria-label="Terminal de entrada">
+      <div class="window-titlebar">
+        <span class="window-title">DEPLOY_ANXIETY://boot/entry</span>
+        <span class="window-controls" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </div>
 
-    <!-- LOGO -->
-    <h1 class="logo crt">CYBERCAIPIRA</h1>
+      <div class="window-body">
+        <h1 class="logo crt">CYBERCAIPIRA</h1>
 
-    <!-- TERMINAL -->
-    <div class="terminal crt" id="terminal"></div>
+        <div class="terminal crt" id="terminal"></div>
 
-    <!-- BOTÃO -->
-    <button id="enterBtn" class="hidden crt glitch-btn">
-      <span class="glitch-inner" data-text="INICIAR_CRISE">INICIAR_CRISE</span>
-    </button>
+        <button id="enterBtn" class="hidden crt glitch-btn">
+          <span class="glitch-inner" data-text="INICIAR_CRISE">INICIAR_CRISE</span>
+        </button>
+      </div>
 
+      <footer class="window-status">
+        <span>VISITORS: 000001</span>
+        <span class="status-marquee">
+          <span>/// boot archive /// signal not trusted /// wait for prompt ///</span>
+        </span>
+        <span>MODE: ENTRY</span>
+      </footer>
+    </section>
   </main>
 
-  <!-- JS -->
   <script src="script.js"></script>
-
 </body>
 </html>
