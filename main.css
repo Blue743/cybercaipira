@@ -14,18 +14,23 @@
 html,
 body {
   margin: 0;
+  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 2 20 10 12 13 9 21z' fill='%23020302' stroke='%239fffd5' stroke-width='1.4'/%3E%3Cpath d='M10 10 20 10' stroke='%23ff4fd2' stroke-width='1'/%3E%3C/svg%3E") 3 2, auto;
 }
 
 body {
-  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: clip;
   color: var(--ink);
   font-family: "Courier New", monospace;
   background:
-    radial-gradient(circle at 50% 18%, rgba(12, 40, 28, 0.22), transparent 28%),
-    radial-gradient(circle at 80% 20%, rgba(30, 12, 26, 0.12), transparent 24%),
-    linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 60%, #000 100%);
+    radial-gradient(ellipse at 48% 42%, rgba(18, 22, 20, 0.42), transparent 42%),
+    radial-gradient(ellipse at 50% 110%, rgba(6, 18, 14, 0.34), transparent 42%),
+    linear-gradient(180deg, #050706 0%, #010201 62%, #000 100%);
   animation: breathe 8s ease-in-out infinite;
 }
 
@@ -45,28 +50,7 @@ body::before {
 }
 
 body::after {
-  content: "";
-  position: fixed;
-  inset: -18%;
-  pointer-events: none;
-  z-index: 4;
-  background:
-    repeating-conic-gradient(
-      from 12deg at 50% 50%,
-      rgba(132, 255, 218, 0.045) 0deg 0.5deg,
-      transparent 0.5deg 9deg
-    ),
-    radial-gradient(
-      circle at 50% 52%,
-      transparent 0 24%,
-      rgba(88, 255, 205, 0.032) 24.4% 24.8%,
-      transparent 25.2% 42%,
-      rgba(0, 0, 0, 0.36) 68%,
-      rgba(0, 0, 0, 0.72) 100%
-  );
-  opacity: 0.72;
-  mix-blend-mode: normal;
-  animation: omenWheel 28s linear infinite;
+  content: none;
 }
 
 a {
@@ -84,7 +68,7 @@ button,
   position: fixed;
   inset: 0;
   z-index: 0;
-  opacity: 0.2;
+  opacity: 0.12;
   filter: brightness(0.55) saturate(0.8);
 }
 
@@ -95,7 +79,7 @@ button,
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.9;
+  opacity: 0.54;
   mix-blend-mode: normal;
   filter: saturate(128%) contrast(118%);
 }
@@ -109,19 +93,7 @@ button,
 }
 
 .screen-fog {
-  position: fixed;
-  inset: -16%;
-  pointer-events: none;
-  z-index: 28;
-  opacity: 0.48;
-  background:
-    radial-gradient(ellipse at 18% 24%, rgba(188, 255, 231, 0.12), transparent 34%),
-    radial-gradient(ellipse at 82% 68%, rgba(108, 255, 215, 0.09), transparent 32%),
-    radial-gradient(ellipse at 48% 88%, rgba(255, 255, 255, 0.055), transparent 30%),
-    linear-gradient(105deg, transparent 0 24%, rgba(170, 255, 226, 0.06) 38%, transparent 58% 100%);
-  filter: blur(26px) saturate(80%);
-  mix-blend-mode: screen;
-  animation: screenFogDrift 24s ease-in-out infinite alternate;
+  display: none;
 }
 
 .ghost-line {
@@ -396,6 +368,7 @@ button,
   display: grid;
   grid-template-columns: 124px minmax(0, 1fr);
   border-bottom: 1px solid rgba(159, 255, 213, 0.2);
+  overflow: hidden;
 }
 
 .archive-nav {
@@ -435,6 +408,7 @@ button,
   padding: 26px 26px 22px;
   display: grid;
   gap: 22px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 16% 8%, rgba(255, 255, 255, 0.035), transparent 17%),
     linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 24%, rgba(0, 0, 0, 0.16));
@@ -502,17 +476,32 @@ button,
 }
 
 .player {
+  position: relative;
+  z-index: 0;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  contain: layout paint;
+  background: rgba(0, 0, 0, 0.78);
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(118, 255, 214, 0.08);
 }
 
 .player iframe {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
+  max-width: 100%;
   min-height: 352px;
   height: min(62vh, 420px);
   border: 0;
   border-radius: 0;
   background: rgba(0, 0, 0, 0.25);
+  clip-path: inset(0);
+  transform: translateZ(0);
   box-shadow:
     0 0 0 1px rgba(118, 255, 214, 0.08),
     0 20px 50px rgba(0, 0, 0, 0.28);

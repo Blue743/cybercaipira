@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>DEPLOY_ANXIETY</title>
 
-  <link rel="stylesheet" href="./assets/effects/crt-css-master/src/style.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="grid" aria-hidden="true"></div>
+  <canvas id="entry-canvas" aria-hidden="true"></canvas>
   <div class="noise" aria-hidden="true"></div>
-  <div class="screen-fog" aria-hidden="true"></div>
+  <div class="ghost-field" id="ghostField" aria-hidden="true"></div>
 
   <div class="home-logo">
     <img src="./assets/images/cicada.png" alt="logo" class="logo-img">
@@ -36,6 +36,12 @@
         <button id="enterBtn" class="hidden crt glitch-btn">
           <span class="glitch-inner" data-text="INICIAR_CRISE">INICIAR_CRISE</span>
         </button>
+
+        <div class="signal-pings" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
 
       <footer class="window-status">

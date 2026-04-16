@@ -25,19 +25,28 @@
 
 html,
 body {
+  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: clip;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 2 20 10 12 13 9 21z' fill='%23020302' stroke='%239fffd5' stroke-width='1.4'/%3E%3Cpath d='M10 10 20 10' stroke='%23ff4fd2' stroke-width='1'/%3E%3C/svg%3E") 3 2, auto;
 }
 
+html {
+  background: #000;
+}
+
 body {
-  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: clip;
   color: var(--ink);
   font-family: "Courier New", monospace;
   background:
-    radial-gradient(circle at 50% 18%, rgba(12, 40, 28, 0.22), transparent 28%),
+    radial-gradient(circle at 50% 18%, rgba(12, 40, 28, 0.28), transparent 30%),
     radial-gradient(circle at 80% 20%, rgba(30, 12, 26, 0.12), transparent 24%),
-    linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 60%, #000 100%);
-  animation: breathe 8s ease-in-out infinite;
+    linear-gradient(180deg, #07100d 0%, #020302 60%, #000 100%);
 }
 
 body::before {
@@ -58,25 +67,14 @@ body::before {
 body::after {
   content: "";
   position: fixed;
-  inset: -18%;
+  inset: 0;
   pointer-events: none;
   z-index: 4;
   background:
-    repeating-conic-gradient(
-      from 12deg at 50% 50%,
-      rgba(132, 255, 218, 0.04) 0deg 0.5deg,
-      transparent 0.5deg 9deg
-    ),
-    radial-gradient(
-      circle at 50% 52%,
-      transparent 0 24%,
-      rgba(88, 255, 205, 0.03) 24.4% 24.8%,
-      transparent 25.2% 42%,
-      rgba(0, 0, 0, 0.32) 68%,
-      rgba(0, 0, 0, 0.72) 100%
-    );
-  opacity: 0.68;
-  animation: omenWheel 28s linear infinite;
+    radial-gradient(circle at 50% 48%, rgba(0, 0, 0, 0) 0 28%, rgba(0, 0, 0, 0.16) 52%, rgba(0, 0, 0, 0.58) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 18%, transparent 78%, rgba(0, 0, 0, 0.36)),
+    linear-gradient(108deg, transparent 0 24%, rgba(170, 255, 226, 0.035) 42%, transparent 58%);
+  opacity: 0.9;
 }
 
 a,
@@ -87,20 +85,35 @@ button,
 
 .grid,
 .noise,
-.screen-fog {
+#entry-canvas {
   position: fixed;
   inset: 0;
   pointer-events: none;
 }
 
+#entry-canvas {
+  z-index: 1;
+  opacity: 0.9;
+  mix-blend-mode: screen;
+  filter: saturate(118%) contrast(112%);
+}
+
 .grid {
   z-index: 0;
-  opacity: 0.42;
-  background-image:
-    linear-gradient(rgba(159, 255, 213, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(159, 255, 213, 0.045) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(circle at center, #000 0 52%, transparent 82%);
+  opacity: 0.5;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(159, 255, 213, 0.16), transparent 0 24%),
+    radial-gradient(circle at 82% 16%, rgba(255, 79, 210, 0.1), transparent 0 18%),
+    radial-gradient(circle at 50% 68%, rgba(159, 255, 213, 0.1), transparent 0 28%),
+    linear-gradient(118deg, transparent 12%, rgba(159, 255, 213, 0.04) 30%, transparent 48%),
+    linear-gradient(242deg, transparent 18%, rgba(92, 255, 240, 0.05) 42%, transparent 58%),
+    radial-gradient(circle at center, rgba(159, 255, 213, 0.05), transparent 62%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 140% 140%, 140% 140%, 100% 100%;
+  background-position: center;
+  filter: blur(2px) saturate(110%);
+  animation:
+    gridDrift 24s linear infinite,
+    gridPulse 8s ease-in-out infinite;
 }
 
 .noise {
@@ -110,19 +123,51 @@ button,
   mix-blend-mode: screen;
 }
 
-.screen-fog {
-  inset: -16%;
-  z-index: 28;
-  opacity: 0.42;
-  background:
-    radial-gradient(ellipse at 18% 24%, rgba(188, 255, 231, 0.11), transparent 34%),
-    radial-gradient(ellipse at 82% 68%, rgba(108, 255, 215, 0.08), transparent 32%),
-    radial-gradient(ellipse at 48% 88%, rgba(255, 255, 255, 0.045), transparent 30%),
-    linear-gradient(105deg, transparent 0 24%, rgba(170, 255, 226, 0.052) 38%, transparent 58% 100%);
-  filter: blur(26px) saturate(80%);
-  mix-blend-mode: screen;
-  animation: screenFogDrift 24s ease-in-out infinite alternate;
+.ghost-field {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 6;
 }
+
+.ghost-line {
+  --ghost-opacity: 1;
+  position: absolute;
+  left: var(--ghost-left);
+  top: var(--ghost-top);
+  color: rgba(170, 255, 226, 0.12);
+  font-size: clamp(0.68rem, calc(0.58rem + var(--ghost-scale) * 0.34vw), 1rem);
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  opacity: calc(0.1 * var(--ghost-opacity));
+  text-shadow:
+    0 0 8px rgba(0, 255, 170, 0.07),
+    1px 0 0 rgba(255, 79, 210, 0.05);
+  mix-blend-mode: screen;
+  animation:
+    ghostFloat var(--ghost-duration) ease-in-out infinite var(--ghost-delay),
+    ghostFade calc(var(--ghost-duration) * 0.72) ease-in-out infinite var(--ghost-delay);
+}
+
+.ghost-line.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.9em;
+  margin-left: 0.18em;
+  vertical-align: -0.08em;
+  background: rgba(160, 255, 225, 0.28);
+  animation: caretBlink 0.9s steps(1, end) infinite;
+}
+
+.ghost-line[data-variant="vertical"] {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.14em;
+}
+
 
 .home-logo {
   position: fixed;
@@ -156,6 +201,7 @@ button,
   position: relative;
   z-index: 10;
   min-height: 100vh;
+  min-height: 100svh;
   width: min(960px, calc(100vw - 32px));
   margin: 0 auto;
   padding: 86px 0 42px;
@@ -185,6 +231,7 @@ button,
     0 24px 80px rgba(0, 0, 0, 0.62),
     inset 0 0 38px rgba(64, 255, 198, 0.035);
   overflow: hidden;
+  animation: windowFloat 9s ease-in-out infinite;
 }
 
 .home-window::before,
@@ -197,12 +244,13 @@ button,
 
 .home-window::before {
   z-index: 3;
-  opacity: 0.36;
+  opacity: 0.42;
   background:
     linear-gradient(92deg, transparent 0 9%, rgba(255, 255, 255, 0.055) 9.2%, transparent 9.7% 44%, rgba(159, 255, 213, 0.04) 44.3%, transparent 45%),
     repeating-linear-gradient(177deg, transparent 0, transparent 17px, rgba(255, 255, 255, 0.035) 18px, transparent 20px),
     radial-gradient(circle at 14% 12%, rgba(0, 0, 0, 0.42), transparent 8%),
-    radial-gradient(circle at 93% 82%, rgba(0, 0, 0, 0.38), transparent 11%);
+    radial-gradient(circle at 93% 82%, rgba(0, 0, 0, 0.38), transparent 11%),
+    linear-gradient(180deg, rgba(188, 255, 230, 0.08), transparent 16%, transparent 82%, rgba(255, 255, 255, 0.04));
   mix-blend-mode: screen;
 }
 
@@ -308,7 +356,46 @@ button,
   border-bottom: 1px solid rgba(159, 255, 213, 0.2);
 }
 
+.window-body::before {
+  content: "";
+  position: absolute;
+  inset: -20% 8%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(124, 255, 219, 0.12), transparent 48%),
+    radial-gradient(circle at 50% 50%, rgba(255, 79, 210, 0.035), transparent 62%);
+  opacity: 0.48;
+  filter: blur(32px);
+  animation: corePulse 6.8s ease-in-out infinite;
+}
+
+.window-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 8%,
+      transparent 24%,
+      transparent 76%,
+      rgba(159, 255, 213, 0.035) 100%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(159, 255, 213, 0.028) 0,
+      rgba(159, 255, 213, 0.028) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  opacity: 0.38;
+  mix-blend-mode: screen;
+}
+
 .logo {
+  position: relative;
   font-family: 'glitch', "Courier New", monospace;
   font-size: clamp(2rem, 8vw, 3.2rem);
   line-height: 1;
@@ -322,7 +409,20 @@ button,
   animation: crt-flicker-logo 0.16s infinite alternate;
 }
 
+.logo::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -0.22em;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(159, 255, 213, 0.55), transparent);
+  opacity: 0.7;
+  animation: titleSweep 5.2s linear infinite;
+}
+
 .terminal {
+  position: relative;
   width: min(100%, 420px);
   min-height: 13.5em;
   max-height: 13.5em;
@@ -350,6 +450,23 @@ button,
 .terminal::before {
   content: "> ";
   color: rgba(255, 79, 210, 0.72);
+}
+
+.terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(164, 255, 228, 0.03) 32%,
+    rgba(164, 255, 228, 0.14) 50%,
+    rgba(164, 255, 228, 0.03) 68%,
+    transparent 100%
+  );
+  transform: translateY(-130%);
+  animation: terminalSweep 5.6s ease-in-out infinite;
+  pointer-events: none;
 }
 
 button {
@@ -390,6 +507,7 @@ button.active {
   justify-content: center;
   isolation: isolate;
   overflow: visible;
+  animation: buttonIdlePulse 2.8s ease-in-out infinite;
 }
 
 .glitch-btn::before,
@@ -466,6 +584,34 @@ button.active {
   border-top: 1px solid rgba(255, 255, 255, 0.035);
 }
 
+.signal-pings {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.signal-pings span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(159, 255, 213, 0.14);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.72);
+  opacity: 0;
+  animation: signalPing 5.4s ease-out infinite;
+}
+
+.signal-pings span:nth-child(2) {
+  animation-delay: 1.8s;
+}
+
+.signal-pings span:nth-child(3) {
+  animation-delay: 3.6s;
+}
+
 .window-status::before {
   content: "";
   position: absolute;
@@ -491,6 +637,22 @@ button.active {
 
 .crt {
   display: inline-block;
+  position: relative;
+  text-shadow:
+    0 0 8px rgba(159, 255, 213, 0.12),
+    0.045em 0 0 rgba(92, 255, 240, 0.3),
+    -0.045em 0 0 rgba(255, 79, 210, 0.2);
+  filter: saturate(108%);
+}
+
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: -0.08em -0.12em;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 38%, transparent 62%, rgba(159, 255, 213, 0.05));
+  opacity: 0.28;
+  mix-blend-mode: screen;
 }
 
 @keyframes breathe {
@@ -509,6 +671,64 @@ button.active {
   100% { transform: translate3d(4%, 2%, 0) scale(1.08); }
 }
 
+@keyframes gridDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(22px, 14px, 0); }
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.34; }
+  50% { opacity: 0.48; }
+}
+
+@keyframes windowFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes corePulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.58;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes titleSweep {
+  0% {
+    opacity: 0;
+    transform: translateX(-14%) scaleX(0.8);
+  }
+  15%,
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(14%) scaleX(1.15);
+  }
+}
+
+@keyframes ghostFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-10px, 4px, 0); }
+}
+
+@keyframes ghostFade {
+  0%, 100% { opacity: 0; }
+  18% { opacity: calc(0.045 * var(--ghost-opacity)); }
+  48% { opacity: calc(0.1 * var(--ghost-opacity)); }
+  82% { opacity: calc(0.035 * var(--ghost-opacity)); }
+}
+
+@keyframes caretBlink {
+  0%, 49% { opacity: 0; }
+  50%, 100% { opacity: 1; }
+}
+
 @keyframes hudWearPulse {
   0%, 100% { opacity: 0.54; }
   48% { opacity: 0.36; }
@@ -518,6 +738,25 @@ button.active {
 @keyframes crt-flicker-logo {
   0% { opacity: 1; }
   100% { opacity: 0.94; }
+}
+
+@keyframes terminalSweep {
+  0%,
+  18% {
+    transform: translateY(-135%);
+    opacity: 0;
+  }
+  28% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.9;
+  }
+  82%,
+  100% {
+    transform: translateY(135%);
+    opacity: 0;
+  }
 }
 
 @keyframes glitchSoft {
@@ -540,6 +779,36 @@ button.active {
 @keyframes flicker {
   0%, 100% { opacity: 0.96; }
   50% { opacity: 0.74; }
+}
+
+@keyframes signalPing {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.72);
+  }
+  18% {
+    opacity: 0.18;
+  }
+  70% {
+    opacity: 0.05;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.25);
+  }
+}
+
+@keyframes buttonIdlePulse {
+  0%, 100% {
+    box-shadow:
+      inset -1px -1px 0 rgba(0, 0, 0, 0.7),
+      0 0 22px rgba(64, 255, 198, 0.08);
+  }
+  50% {
+    box-shadow:
+      inset -1px -1px 0 rgba(0, 0, 0, 0.7),
+      0 0 34px rgba(64, 255, 198, 0.16);
+  }
 }
 
 @keyframes statusCrawl {
@@ -603,6 +872,10 @@ button.active {
     padding: 38px 14px 28px;
   }
 
+  .signal-pings span {
+    width: 120px;
+  }
+
   .terminal {
     font-size: 0.82rem;
   }
@@ -610,5 +883,21 @@ button.active {
   .window-status {
     grid-template-columns: 1fr;
     gap: 5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .home-window,
+  .window-body::before,
+  .logo,
+  .logo::after,
+  .ghost-line,
+  .terminal::after,
+  .glitch-btn,
+  .signal-pings span,
+  .status-marquee span,
+  .logo-img {
+    animation: none !important;
   }
 }
